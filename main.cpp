@@ -38,32 +38,32 @@ int main()
             lines.push_back(line);
     }
     file.close();
-    for(int k = 0;k < 10; k++){
-        int processedLines = 0;
-        for(auto l : lines){
-            //split the first item off to use for target
-            auto posComma = l.find(",", 0);
-            int iTarget = atoi((l.substr(0, posComma)).data());
-            std::string t = l.substr(posComma+1,l.size());
-            //load remaining items into matrix
-            std::vector<std::string> vTargets;
-            string_explode(t, ',', vTargets);
-            MatrixXd mTrainingInputs(vTargets.size(), 1);
-            uint iter = 0;
-            for(auto g : vTargets){
-                mTrainingInputs(iter, 0) = (atof(g.data())/255 * 0.99) + 0.01;
-                ++iter;
-            }
-            //now load correct target matrix
-            MatrixXd mTargets(10, 1);
-            mTargets << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01;
-            mTargets(iTarget, 0) = 0.99;
-            //and finally, the actual training process
-            myNet.train(mTrainingInputs, mTargets);
-            ++processedLines;
-            std::cout << "Finished training line " << processedLines << std::endl;
+    
+    int processedLines = 0;
+    for(auto l : lines){
+        //split the first item off to use for target
+        auto posComma = l.find(",", 0);
+        int iTarget = atoi((l.substr(0, posComma)).data());
+        std::string t = l.substr(posComma+1,l.size());
+        //load remaining items into matrix
+        std::vector<std::string> vTargets;
+        string_explode(t, ',', vTargets);
+        MatrixXd mTrainingInputs(vTargets.size(), 1);
+        uint iter = 0;
+        for(auto g : vTargets){
+            mTrainingInputs(iter, 0) = (atof(g.data())/255 * 0.99) + 0.01;
+            ++iter;
         }
+        //now load correct target matrix
+        MatrixXd mTargets(10, 1);
+        mTargets << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01;
+        mTargets(iTarget, 0) = 0.99;
+        //and finally, the actual training process
+        myNet.train(mTrainingInputs, mTargets);
+        ++processedLines;
+        std::cout << "Finished training line " << processedLines << std::endl;
     }
+    
     //now let's test our network to see if training was successful
     std::vector<std::string> testlines;
     std::ifstream testfile("test.txt");
