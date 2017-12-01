@@ -11,7 +11,7 @@ void string_explode(const std::basic_string<T>& s, T c, std::vector<std::basic_s
     //example usage:
     //std::string s("23,45,18,92,54");
     //std::vector<std::string> v;
-    //bsc_explode(s, ',', v); ~note the single quotes around the comma, not double quotes
+    //string_explode(s, ',', v); ~note the single quotes around the comma, not double quotes
     //also note that vector v will be filled with strings, not numeric values
     typename std::basic_string<T>::size_type i = 0;
     typename std::basic_string<T>::size_type j = s.find(c);
